@@ -1,0 +1,107 @@
+import 'package:flutter/material.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Form Demo',
+      theme: ThemeData(primarySwatch: Colors.teal),
+      home: FormDemo(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+class FormDemo extends StatefulWidget {
+  @override
+  _FormDemoState createState() => _FormDemoState();
+}
+
+class _FormDemoState extends State<FormDemo> {
+  final _formKey = GlobalKey<FormState>();
+
+  // Controllers to capture input
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      // All fields are valid
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Form Submitted!"),
+          content: Text("Name: ${_nameController.text}\nEmail: ${_emailController.text}"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("OK"),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Interactive Form'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey, // Assign the form key
+          child: Column(
+            children: [
+              TextFormField(
+                controller: _nameController,
+                decoration: InputDecoration(labelText: 'Full Name'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your name';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 12),
+              TextFormField(
+                controller: _emailController,
+                decoration: InputDecoration(labelText: 'Email'),
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+                  if (value == null ||
+                      !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                    return 'Enter a valid email';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 12),
+              TextFormField(
+                controller: _passwordController,
+                decoration: InputDecoration(labelText: 'Password'),
+                obscureText: true, // hide input
+                validator: (value) {
+                  if (value == null || value.length < 6) {
+                    return 'Minimum 6 characters';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _submitForm,
+                child: Text('Submit'),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

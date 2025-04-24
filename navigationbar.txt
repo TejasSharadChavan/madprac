@@ -1,0 +1,73 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Tab Navigation Demo',
+      theme: ThemeData(primarySwatch: Colors.teal),
+      home: MyHomePage(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  int _selectedIndex = 0;
+
+  // Pages with unique background colors
+  final List<Widget> _pages = [
+    Container(
+      color: Colors.blue[600],
+      child: Center(
+        child: Text('🏠 Home Page', style: TextStyle(fontSize: 24, color: Colors.white)),
+      ),
+    ),
+    Container(
+      color: Colors.orange[400],
+      child: Center(
+        child: Text('📄 Profile Page', style: TextStyle(fontSize: 24, color: Colors.white)),
+      ),
+    ),
+    Container(
+      color: Colors.green[500],
+      child: Center(
+        child: Text('⚙️ Settings Page', style: TextStyle(fontSize: 24, color: Colors.white)),
+      ),
+    ),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() => _selectedIndex = index);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Bottom Tab Navigation'),
+      ),
+      body: _pages[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.teal,
+        unselectedItemColor: Colors.grey,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
+        ],
+      ),
+    );
+  }
+}
