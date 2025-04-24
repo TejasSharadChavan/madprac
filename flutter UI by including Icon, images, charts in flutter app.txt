@@ -34,13 +34,15 @@ class HomePage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Profile image and name
             Row(
               children: [
                 CircleAvatar(
                   radius: 40,
-                  backgroundImage: NetworkImage('https://i.pravatar.cc/150?img=3'),
+                  backgroundImage:
+                      NetworkImage('https://i.pravatar.cc/150?img=3'),
                 ),
                 SizedBox(width: 16),
                 Text(
@@ -77,47 +79,34 @@ class HomePage extends StatelessWidget {
             Text('Activity Chart', style: TextStyle(fontSize: 18)),
             SizedBox(height: 16),
 
-            Row(
-              children: [
-                Text('Work'),
-                SizedBox(width: 10),
-                Expanded(
-                  child: Container(height: 20, color: Colors.blue, width: 100),
-                ),
-              ],
-            ),
-            SizedBox(height: 8),
-            Row(
-              children: [
-                Text('Study'),
-                SizedBox(width: 10),
-                Expanded(
-                  child: Container(height: 20, color: Colors.green, width: 80),
-                ),
-              ],
-            ),
-            SizedBox(height: 8),
-            Row(
-              children: [
-                Text('Exercise'),
-                SizedBox(width: 10),
-                Expanded(
-                  child: Container(height: 20, color: Colors.orange, width: 60),
-                ),
-              ],
-            ),
-            SizedBox(height: 8),
-            Row(
-              children: [
-                Text('Leisure'),
-                SizedBox(width: 10),
-                Expanded(
-                  child: Container(height: 20, color: Colors.red, width: 40),
-                ),
-              ],
-            ),
+            _buildChartRow('Work', Colors.blue, 0.9),
+            _buildChartRow('Study', Colors.green, 0.7),
+            _buildChartRow('Exercise', Colors.orange, 0.5),
+            _buildChartRow('Leisure', Colors.red, 0.3),
           ],
         ),
+      ),
+    );
+  }
+
+  // Helper method for reusable chart rows
+  Widget _buildChartRow(String label, Color color, double fillPercent) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          SizedBox(width: 70, child: Text(label)),
+          Expanded(
+            child: FractionallySizedBox(
+              alignment: Alignment.centerLeft,
+              widthFactor: fillPercent,
+              child: Container(
+                height: 20,
+                color: color,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
